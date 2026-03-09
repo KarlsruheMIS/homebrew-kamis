@@ -38,20 +38,22 @@ class Kamis < Formula
       (buildpath/"mmwis/extern/KaHIP").install Dir["*"]
     end
 
+    gcc = Formula["gcc"]
+    gcc_version = gcc.version.major
+    cmake_args = std_cmake_args.reject { |a| a.start_with?("-DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=") }
+    cmake_args += %W[
+      -DCMAKE_BUILD_TYPE=Release
+      -DCMAKE_C_COMPILER=#{gcc.opt_bin}/gcc-#{gcc_version}
+      -DCMAKE_CXX_COMPILER=#{gcc.opt_bin}/g++-#{gcc_version}
+      -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+    ]
+
     # Build 1: Main build (redumis, graphchecker, sort_adjacencies, online_mis, wmis/)
-    system "cmake", "-S", ".", "-B", "build",
-                    "-DCMAKE_BUILD_TYPE=Release",
-                    "-DCMAKE_C_COMPILER=#{Formula["gcc"].opt_bin}/gcc-#{Formula["gcc"].version.major}",
-                    "-DCMAKE_CXX_COMPILER=#{Formula["gcc"].opt_bin}/g++-#{Formula["gcc"].version.major}",
-                    *std_cmake_args
+    system "cmake", "-S", ".", "-B", "build", *cmake_args
     system "cmake", "--build", "build", "--parallel"
 
     # Build 2: MMWIS build (mmwis, struction)
-    system "cmake", "-S", "mmwis", "-B", "mmwis/build",
-                    "-DCMAKE_BUILD_TYPE=Release",
-                    "-DCMAKE_C_COMPILER=#{Formula["gcc"].opt_bin}/gcc-#{Formula["gcc"].version.major}",
-                    "-DCMAKE_CXX_COMPILER=#{Formula["gcc"].opt_bin}/g++-#{Formula["gcc"].version.major}",
-                    *std_cmake_args
+    system "cmake", "-S", "mmwis", "-B", "mmwis/build", *cmake_args
     system "cmake", "--build", "mmwis/build", "--parallel"
 
     # Install main binaries
