@@ -2,7 +2,7 @@ class Kamis < Formula
   desc "Karlsruhe Maximum Independent Sets - exact and heuristic solvers for MIS and MWIS"
   homepage "https://github.com/KarlsruheMIS/KaMIS"
   url "https://github.com/KarlsruheMIS/KaMIS/archive/refs/tags/v3.1.tar.gz"
-  sha256 "0af2b5dd4604075281152a8b2296e2617e43c85861bb432f5ea023058796d385"
+  sha256 "c66bd13a1ab4739eef47d52df647d6527bdafe4f19b0fca9153ce74735b3adb7"
   license "MIT"
 
   # KaHIP submodule required for mmwis build (mmwis/extern/KaHIP)
