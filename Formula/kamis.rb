@@ -58,7 +58,7 @@ class Kamis < Formula
 
     # Install main binaries
     bin.install "build/redumis"
-    bin.install "build/graphchecker"
+    bin.install "build/graphchecker" => "kamis_graphchecker"
     bin.install "build/sort_adjacencies"
     bin.install "build/online_mis"
 
@@ -92,7 +92,7 @@ class Kamis < Formula
     assert_match(/Independent set has size/, output)
 
     # Verify graphchecker works
-    output = shell_output("#{bin}/graphchecker #{testpath}/test.graph")
+    output = shell_output("#{bin}/kamis_graphchecker #{testpath}/test.graph")
     assert_match(/graph/, output.downcase)
   end
 end
